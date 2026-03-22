@@ -8,7 +8,6 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import AIAssistant from "./components/AIAssistant";
-import Navbar from "./components/Navbar";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import About from "./pages/About";
@@ -33,6 +32,7 @@ import ManageEvents from "./pages/dashboard/admin/ManageEvents";
 import ManageUsers from "./pages/dashboard/admin/ManageUsers";
 import Overview from "./pages/dashboard/admin/Overview";
 import AdminSettings from "./pages/dashboard/admin/Settings";
+import Navbar from "./components/Navber";
 
 // Layout wrapper for public pages
 function PublicLayout() {

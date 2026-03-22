@@ -7,6 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 import { Link, useRouter } from "@tanstack/react-router";
 import {
   Calendar,
@@ -19,9 +21,8 @@ import {
   User,
   X,
 } from "lucide-react";
-import { useState } from "react";
-//import { useAuth } from "../context/AuthContext";
-//import { useTheme } from "../context/ThemeContext";
+//import { useState } from "react";
+
 
 const categories = [
   "Music",
@@ -317,3 +318,7 @@ export default function Navbar() {
     </header>
   );
 }
+function useState(arg0: boolean): [any, any] {
+  throw new Error("Function not implemented.");
+}
+
