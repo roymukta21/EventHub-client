@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import Footer from "../components/Footer";
-import { blogPosts } from "../data/blog";
+//import Footer from "../components/Footer";
+//import { blogPosts } from "../data/blog";
 
 const CATEGORIES = [
   "All",

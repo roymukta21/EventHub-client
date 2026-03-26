@@ -1,4 +1,6 @@
-import Footer from "../components/Footer";
+//import Footer from "../components/Footer";
+
+import Footer from "@/components/Footer";
 
 const TEAM = [
   {
@@ -41,7 +43,7 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-display font-bold mb-6">Our Mission</h1>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            We believe life's most meaningful moments happen when people gather.
+            We believe life&apos;s most meaningful moments happen when people gather.
             EventHub exists to make those moments more discoverable, more
             accessible, and more extraordinary.
           </p>
@@ -65,12 +67,12 @@ export default function About() {
                 <p>
                   We built EventHub to solve exactly that problem: a platform
                   that uses AI to cut through the noise and surface events
-                  you'll genuinely love, with a booking experience so smooth it
+                  you&apos;ll genuinely love, with a booking experience so smooth it
                   feels magical.
                 </p>
                 <p>
                   Today, EventHub connects millions of people with tens of
-                  thousands of events across hundreds of cities. We're just
+                  thousands of events across hundreds of cities. We&apos;re just
                   getting started.
                 </p>
               </div>
