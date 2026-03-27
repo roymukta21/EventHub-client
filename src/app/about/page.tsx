@@ -1,5 +1,3 @@
-//import Footer from "../components/Footer";
-
 import Footer from "@/components/Footer";
 
 const TEAM = [

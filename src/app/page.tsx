@@ -1,11 +1,6 @@
-import React from 'react';
+"use client";
+import App from "../App";
 
-const page = () => {
-  return (
-    <div>
-      <h1>EventHub</h1>
-    </div>
-  );
-};
-
-export default page;
+export default function Page() {
+  return <App />;
+}

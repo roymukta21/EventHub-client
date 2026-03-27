@@ -1,3 +1,5 @@
+"use client";
+
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Mail, MapPin, Phone } from "lucide-react";
 import { useState } from "react";
-//import Footer from "../components/Footer";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -55,8 +56,8 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-display font-bold mb-3">Get in Touch</h1>
           <p className="text-muted-foreground">
-            Have a question, suggestion, or just want to say hello? We&apos;d love to
-            hear from you.
+            Have a question, suggestion, or just want to say hello? We&apos;d
+            love to hear from you.
           </p>
         </div>
       </div>

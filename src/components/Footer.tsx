@@ -1,11 +1,7 @@
+"use client";
 import { Link } from "@tanstack/react-router";
 import { Calendar } from "lucide-react";
-import {
-  SiFacebook,
-  SiInstagram,
-  SiX,
-  SiYoutube,
-} from "react-icons/si";
+import { SiFacebook, SiInstagram, SiX, SiYoutube } from "react-icons/si";
 import { SlSocialLinkedin } from "react-icons/sl";
 
 const SOCIAL_LINKS = [

@@ -5,6 +5,7 @@ import { Bot, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { events } from "../data/events";
 import type { Event } from "../data/events";
+import { api } from "../utils/api";
 
 interface Message {
   id: number;
@@ -13,60 +14,35 @@ interface Message {
   events?: Event[];
 }
 
-function getAIResponse(input: string): { text: string; events?: Event[] } {
+// Fallback local response when not authenticated or API unavailable
+function getLocalResponse(input: string): { text: string; events?: Event[] } {
   const q = input.toLowerCase();
-  if (q.includes("help"))
-    return {
-      text: "Hi! I'm EventAI 🤖 I can help you find events. Try asking me:\n• 'Suggest popular events'\n• 'Find music events'\n• 'Show cheap events'\n• 'Tech events near me'",
-    };
   if (q.includes("popular") || q.includes("top") || q.includes("best"))
     return {
-      text: "Here are the top-rated events right now! 🌟",
+      text: "Here are the top-rated events! 🌟",
       events: [...events].sort((a, b) => b.rating - a.rating).slice(0, 3),
     };
-  if (q.includes("free") || q.includes("cheap") || q.includes("budget"))
+  if (q.includes("free") || q.includes("cheap"))
     return {
-      text: "Here are some affordable events you'll love! 💰",
+      text: "Here are some affordable events! 💰",
       events: events.filter((e) => e.price <= 20).slice(0, 3),
     };
   if (q.includes("music"))
     return {
-      text: "Check out these amazing music events! 🎵",
+      text: "Check out these music events! 🎵",
       events: events.filter((e) => e.category === "Music").slice(0, 3),
     };
   if (q.includes("tech") || q.includes("technology"))
     return {
-      text: "Here are top tech events for you! 💻",
+      text: "Top tech events for you! 💻",
       events: events.filter((e) => e.category === "Technology").slice(0, 3),
     };
-  if (q.includes("sport") || q.includes("fitness") || q.includes("run"))
+  if (q.includes("food"))
     return {
-      text: "Get active with these sports events! 🏃",
-      events: events.filter((e) => e.category === "Sports").slice(0, 3),
-    };
-  if (q.includes("food") || q.includes("eat") || q.includes("cuisine"))
-    return {
-      text: "Foodies unite! Here are some delicious events! 🍔",
+      text: "Delicious food events! 🍔",
       events: events.filter((e) => e.category === "Food").slice(0, 3),
     };
-  if (q.includes("art") || q.includes("culture"))
-    return {
-      text: "Explore these beautiful arts & culture events! 🎨",
-      events: events.filter((e) => e.category === "Arts").slice(0, 3),
-    };
-  if (q.includes("business") || q.includes("network") || q.includes("startup"))
-    return {
-      text: "Level up your career with these business events! 📊",
-      events: events.filter((e) => e.category === "Business").slice(0, 3),
-    };
-  if (q.includes("recommend") || q.includes("suggest") || q.includes("what"))
-    return {
-      text: "Based on what's trending, here are my top recommendations! ✨",
-      events: events.filter((e) => e.isFeatured).slice(0, 3),
-    };
-  return {
-    text: "I can help you find events! Try asking about music events, tech conferences, sports activities, food festivals, or just say 'recommend' for top picks. 🎉",
-  };
+  return { text: "Try asking about music, tech, food, or popular events! 🎉" };
 }
 
 export default function AIAssistant() {
@@ -75,10 +51,11 @@ export default function AIAssistant() {
     {
       id: 0,
       role: "bot",
-      text: "Hello! I'm EventAI 🤖 Your personal event discovery assistant. Ask me to recommend events, find music festivals, tech conferences, or anything else!",
+      text: "Hello! I'm EventAI 🤖 Ask me to recommend events, find music festivals, tech conferences, or anything else!",
     },
   ]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll on message change
@@ -86,19 +63,53 @@ export default function AIAssistant() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const send = () => {
+  const send = async () => {
     const text = input.trim();
-    if (!text) return;
+    if (!text || loading) return;
     const userMsg: Message = { id: Date.now(), role: "user", text };
-    const resp = getAIResponse(text);
-    const botMsg: Message = {
-      id: Date.now() + 1,
-      role: "bot",
-      text: resp.text,
-      events: resp.events,
-    };
-    setMessages((prev) => [...prev, userMsg, botMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("eventhub_token");
+      let botText = "";
+      if (token) {
+        const res = await api.post<{
+          success: boolean;
+          data: { reply: string };
+        }>("/ai/chat", { message: text });
+        botText = res.data.reply;
+      } else {
+        const local = getLocalResponse(text);
+        const botMsg: Message = {
+          id: Date.now() + 1,
+          role: "bot",
+          text: local.text,
+          events: local.events,
+        };
+        setMessages((prev) => [...prev, botMsg]);
+        setLoading(false);
+        return;
+      }
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, role: "bot", text: botText },
+      ]);
+    } catch {
+      const local = getLocalResponse(text);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: "bot",
+          text: local.text,
+          events: local.events,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -186,6 +197,13 @@ export default function AIAssistant() {
                 </div>
               </div>
             ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-muted rounded-2xl rounded-bl-sm px-3 py-2 text-sm text-muted-foreground">
+                  Thinking...
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -197,12 +215,14 @@ export default function AIAssistant() {
               placeholder="Ask about events..."
               className="text-sm"
               data-ocid="ai_assistant.input"
+              disabled={loading}
             />
             <Button
               onClick={send}
               size="icon"
               className="bg-primary text-primary-foreground flex-shrink-0"
               data-ocid="ai_assistant.submit_button"
+              disabled={loading}
             >
               <Send className="w-4 h-4" />
             </Button>

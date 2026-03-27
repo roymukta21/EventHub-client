@@ -1,3 +1,6 @@
+"use client";
+import Footer from "@/components/Footer";
+import { blogPosts } from "@/data/blog";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 //import Footer from "../components/Footer";

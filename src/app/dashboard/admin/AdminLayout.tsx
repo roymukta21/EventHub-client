@@ -30,7 +30,7 @@ export default function AdminLayout() {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
-  if (!user || user.role !== "admin") {
+  if (!user || (user.role ?? "").toLowerCase() !== "admin") {
     navigate({ to: "/" });
     return null;
   }

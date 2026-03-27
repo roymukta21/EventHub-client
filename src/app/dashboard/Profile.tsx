@@ -46,13 +46,7 @@ export default function Profile() {
     { label: "Bio", val: user.bio || "No bio added yet" },
     { label: "Phone", val: user.phone || "Not provided" },
     { label: "Location", val: user.location || "Not provided" },
-    {
-      label: "Member since",
-      val: new Date(user.joinedAt).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      }),
-    },
+    { label: "Role", val: user.role },
   ];
 
   return (

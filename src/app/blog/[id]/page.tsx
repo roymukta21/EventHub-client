@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blog";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-//import Footer from "../components/Footer";
-//import { blogPosts } from "../data/blog";
 
 export default function BlogDetail() {
   const { id } = useParams({ from: "/public/blog/$id" });

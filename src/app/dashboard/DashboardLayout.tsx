@@ -122,7 +122,7 @@ export default function DashboardLayout() {
                 <item.icon className="w-4 h-4" /> {item.label}
               </Link>
             ))}
-            {user.role === "admin" && (
+            {(user.role ?? "").toLowerCase() === "admin" && (
               <Link
                 to="/dashboard/admin"
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent transition-colors mt-2 border-t border-border pt-4"

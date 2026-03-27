@@ -8,37 +8,45 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import AIAssistant from "./components/AIAssistant";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
-import Contact from "./pages/Contact";
-import EventDetail from "./pages/EventDetail";
-import Explore from "./pages/Explore";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Privacy from "./pages/Privacy";
-import Register from "./pages/Register";
-import Terms from "./pages/Terms";
-import Bookings from "./pages/dashboard/Bookings";
-import DashboardLayout from "./pages/dashboard/DashboardLayout";
-import Profile from "./pages/dashboard/Profile";
-import Reviews from "./pages/dashboard/Reviews";
-import AdminLayout from "./pages/dashboard/admin/AdminLayout";
-import Analytics from "./pages/dashboard/admin/Analytics";
-import ManageBookings from "./pages/dashboard/admin/ManageBookings";
-import ManageEvents from "./pages/dashboard/admin/ManageEvents";
-import ManageUsers from "./pages/dashboard/admin/ManageUsers";
-import Overview from "./pages/dashboard/admin/Overview";
-import AdminSettings from "./pages/dashboard/admin/Settings";
-import Navbar from "./components/Navber";
-
+// import About from "./app/About";
+// import Blog from "./app/Blog";
+// import BlogDetail from "./app/BlogDetail";
+//import Contact from "./app/Contact";
+import EventDetail from "./app/EventDetail";
+import Explore from "./app/Explore";
+import Landing from "./app/Landing";
+// import Login from "./app/Login";
+// import Privacy from "./app/Privacy";
+// import Register from "./app/Register";
+//import Terms from "./app/Terms";
+import Bookings from "./app/dashboard/Bookings";
+import DashboardLayout from "./app/dashboard/DashboardLayout";
+import Profile from "./app/dashboard/Profile";
+import Reviews from "./app/dashboard/Reviews";
+import AdminLayout from "./app/dashboard/admin/AdminLayout";
+import Analytics from "./app/dashboard/admin/Analytics";
+import ManageBookings from "./app/dashboard/admin/ManageBookings";
+import ManageEvents from "./app/dashboard/admin/ManageEvents";
+import ManageUsers from "./app/dashboard/admin/ManageUsers";
+import Overview from "./app/dashboard/admin/Overview";
+import AdminSettings from "./app/dashboard/admin/Settings";
+import Navbar from "./components/Navbar";
+import Login from "./app/login/page";
+import Register from "./app/register/page";
+import About from "./app/about/page";
+import Blog from "./app/blog/page";
+import BlogDetail from "./app/blog/[id]/page";
+import Privacy from "./app/privacy/page";
+import Terms from "./app/terms/page";
+import Contact from "./app/contact/page";
+//import Terms from "./app/pages/Terms";
 // Layout wrapper for public pages
 function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar/>
       <main className="flex-1">
         <Outlet />
       </main>
@@ -151,7 +159,7 @@ const reviewsRoute = createRoute({
   component: Reviews,
 });
 
-// Admin
+// Admin — role can be "ADMIN" (from backend) or "admin" (from mock data)
 const adminRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dashboard/admin",
@@ -161,7 +169,8 @@ const adminRoute = createRoute({
     if (!stored) throw redirect({ to: "/login" });
     try {
       const user = JSON.parse(stored);
-      if (user.role !== "admin") throw redirect({ to: "/dashboard/profile" });
+      const role = (user.role ?? "").toLowerCase();
+      if (role !== "admin") throw redirect({ to: "/dashboard/profile" });
     } catch (e) {
       if (e && typeof e === "object" && "to" in e) throw e;
       throw redirect({ to: "/login" });

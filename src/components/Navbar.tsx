@@ -21,8 +21,7 @@ import {
   User,
   X,
 } from "lucide-react";
-//import { useState } from "react";
-
+import { useState } from "react";
 
 const categories = [
   "Music",
@@ -50,7 +49,11 @@ export default function Navbar() {
     to,
     children,
     ocid,
-  }: { to: string; children: React.ReactNode; ocid: string }) => (
+  }: {
+    to: string;
+    children: React.ReactNode;
+    ocid: string;
+  }) => (
     <Link
       to={to}
       className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -125,11 +128,9 @@ export default function Navbar() {
             <NavLink to="/contact" ocid="navbar.contact_link">
               Contact
             </NavLink>
-            {user && (
-              <NavLink to="/blog" ocid="navbar.blog_link">
-                Blog
-              </NavLink>
-            )}
+            <NavLink to="/blog" ocid="navbar.blog_link">
+              Blog
+            </NavLink>
             {user && (
               <NavLink to="/dashboard/profile" ocid="navbar.dashboard_link">
                 Dashboard
@@ -264,15 +265,13 @@ export default function Navbar() {
           >
             Contact
           </Link>
-          {user && (
-            <Link
-              to="/blog"
-              className="block py-2 text-sm font-medium"
-              onClick={() => setMobileOpen(false)}
-            >
-              Blog
-            </Link>
-          )}
+          <Link
+            to="/blog"
+            className="block py-2 text-sm font-medium"
+            onClick={() => setMobileOpen(false)}
+          >
+            Blog
+          </Link>
           {user && (
             <Link
               to="/dashboard/profile"
@@ -318,7 +317,3 @@ export default function Navbar() {
     </header>
   );
 }
-function useState(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}
-
