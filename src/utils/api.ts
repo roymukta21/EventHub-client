@@ -1,5 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
+const BASE_URL = "https://event-hub-server-tss2.vercel.app";
 function getToken() {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("eventhub_token");
