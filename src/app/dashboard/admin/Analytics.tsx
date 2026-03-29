@@ -97,7 +97,7 @@ export default function Analytics() {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" fontSize={11} />
               <YAxis fontSize={11} />
-              <Tooltip formatter={(v: number) => [`$${v}`, "Revenue"]} />
+              <Tooltip formatter={(v: any) => [`$${v}`, "Revenue"]} />
               <Line
                 type="monotone"
                 dataKey="revenue"
@@ -129,7 +129,7 @@ export default function Analytics() {
                   <Cell key={entry.name} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v: number) => [`${v}%`, "Share"]} />
+              <Tooltip formatter={(v: any) => [`${v}%`, "Share"]} />
             </PieChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap gap-3">

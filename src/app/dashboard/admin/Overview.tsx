@@ -120,7 +120,7 @@ export default function Overview() {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" fontSize={12} />
               <YAxis fontSize={12} />
-              <Tooltip formatter={(v: number) => [`$${v}`, "Revenue"]} />
+              <Tooltip formatter={(v: any) => [`$${v}`, "Revenue"]} />
               <Line
                 type="monotone"
                 dataKey="revenue"

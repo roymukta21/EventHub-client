@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, Outlet, useNavigate, useRouter } from "@tanstack/react-router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Calendar,
   LayoutDashboard,
@@ -21,20 +24,22 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
-export default function DashboardLayout() {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const navigate = useNavigate();
   const router = useRouter();
 
-  if (!user) {
-    router.navigate({ to: "/login" });
-    return null;
-  }
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
+
+  if (!user) return null;
 
   const handleLogout = () => {
     logout();
-    navigate({ to: "/" });
+    router.push("/");
   };
 
   const navItems = [
@@ -46,7 +51,7 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md h-16 flex items-center px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 mr-6">
+        <Link href="/" className="flex items-center gap-2 mr-6">
           <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
             <LayoutDashboard className="w-3.5 h-3.5 text-primary-foreground" />
           </div>
@@ -77,7 +82,7 @@ export default function DashboardLayout() {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
-              <Link to="/dashboard/profile">
+              <Link href="/dashboard/profile">
                 <DropdownMenuItem className="cursor-pointer gap-2">
                   <User className="w-4 h-4" /> Profile
                 </DropdownMenuItem>
@@ -115,7 +120,7 @@ export default function DashboardLayout() {
             {navItems.map((item) => (
               <Link
                 key={item.to}
-                to={item.to}
+                href={item.to}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors [&.active]:bg-sidebar-accent [&.active]:text-sidebar-primary"
                 data-ocid={`dashboard.${item.label.toLowerCase().replace(/ /g, "_")}_link`}
               >
@@ -124,7 +129,7 @@ export default function DashboardLayout() {
             ))}
             {(user.role ?? "").toLowerCase() === "admin" && (
               <Link
-                to="/dashboard/admin"
+                href="/dashboard/admin"
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent transition-colors mt-2 border-t border-border pt-4"
               >
                 <LayoutDashboard className="w-4 h-4" /> Admin Panel
@@ -142,7 +147,7 @@ export default function DashboardLayout() {
           </div>
         </aside>
         <main className="flex-1 p-6 overflow-auto">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

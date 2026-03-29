@@ -1,0 +1,10 @@
+﻿src/app/blog/[id]/page.tsx(29,5): error TS2657: JSX expressions must have one parent element.
+src/app/blog/[id]/page.tsx(93,48): error TS1005: ',' expected.
+src/app/blog/[id]/page.tsx(93,54): error TS1005: '}' expected.
+src/app/blog/[id]/page.tsx(93,69): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/app/blog/[id]/page.tsx(94,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/app/blog/[id]/page.tsx(95,13): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/app/blog/[id]/page.tsx(108,15): error TS17002: Expected corresponding JSX closing tag for 'div'.
+src/app/blog/[id]/page.tsx(109,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/app/blog/[id]/page.tsx(113,5): error TS1005: ')' expected.
+src/app/blog/[id]/page.tsx(114,3): error TS1109: Expression expected.

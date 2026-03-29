@@ -1,12 +1,14 @@
+"use client";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blog";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export default function BlogDetail() {
-  const { id } = useParams({ from: "/public/blog/$id" });
-  const navigate = useNavigate();
+  const params = useParams();
+  const id = params?.id as string;
+  const router = useRouter();
   const post = blogPosts.find((p) => p.id === Number(id));
 
   if (!post)
@@ -16,7 +18,7 @@ export default function BlogDetail() {
           <h2 className="text-2xl font-display font-bold mb-2">
             Post not found
           </h2>
-          <Button onClick={() => navigate({ to: "/blog" })}>
+          <Button onClick={() => router.push("/blog")}>
             Back to Blog
           </Button>
         </div>
@@ -30,7 +32,7 @@ export default function BlogDetail() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Button
           variant="ghost"
-          onClick={() => navigate({ to: "/blog" })}
+          onClick={() => router.push("/blog")}
           className="mb-6 gap-2"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Blog
@@ -89,9 +91,7 @@ export default function BlogDetail() {
               key={p.id}
               variant="ghost"
               className="h-auto p-0 text-left"
-              onClick={() =>
-                navigate({ to: "/blog/$id", params: { id: String(p.id) } })
-              }
+              onClick={() => router.push(`/blog/${p.id}`)}
             >
               <div className="bg-card border border-border rounded-xl overflow-hidden w-full">
                 <img

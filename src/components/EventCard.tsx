@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Calendar, MapPin, Star } from "lucide-react";
 import type { Event } from "../data/events";
 
@@ -87,7 +87,7 @@ export default function EventCard({ event, index = 1 }: EventCardProps) {
           <span className="font-bold text-primary text-lg">
             {event.price === 0 ? "Free" : `$${event.price}`}
           </span>
-          <Link to="/events/$id" params={{ id: String(event.id) }}>
+          <Link href={`/events/${event.id}`}>
             <Button
               size="sm"
               className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-xs"

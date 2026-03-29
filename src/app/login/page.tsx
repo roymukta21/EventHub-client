@@ -1,15 +1,17 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
-import { Link, useNavigate } from "@tanstack/react-router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Calendar, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export default function Login() {
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
@@ -41,7 +43,7 @@ export default function Login() {
     setLoading(false);
     if (result.success) {
       toast.success("Welcome back!");
-      navigate({ to: "/dashboard/profile" });
+      router.push("/dashboard/profile");
     } else {
       setErrors({ form: result.error });
     }
@@ -58,7 +60,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl p-8 shadow-lg">
           <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+            <Link href="/" className="inline-flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-primary-foreground" />
               </div>
@@ -190,7 +192,7 @@ export default function Login() {
           <p className="text-center text-sm text-muted-foreground mt-6">
             Don&apos;t have an account?{" "}
             <Link
-              to="/register"
+              href="/register"
               className="text-primary hover:underline font-medium"
             >
               Create one

@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blog";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { useState } from "react";
 //import Footer from "../components/Footer";
 //import { blogPosts } from "../data/blog";
@@ -49,7 +49,7 @@ export default function Blog() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((post, i) => (
-            <Link key={post.id} to="/blog/$id" params={{ id: String(post.id) }}>
+            <Link key={post.id} href={`/blog/${post.id}`}>
               <article
                 className="bg-card border border-border rounded-2xl overflow-hidden card-hover h-full flex flex-col"
                 data-ocid={`blog.item.${i + 1}`}

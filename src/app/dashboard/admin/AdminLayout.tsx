@@ -1,6 +1,8 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Link, Outlet, useNavigate } from "@tanstack/react-router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   BarChart3,
   BookOpen,
@@ -25,25 +27,25 @@ const navItems = [
   { to: "/dashboard/admin/settings", icon: Settings, label: "Settings" },
 ];
 
-export default function AdminLayout() {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   if (!user || (user.role ?? "").toLowerCase() !== "admin") {
-    navigate({ to: "/" });
+    router.push("/");
     return null;
   }
 
   const handleLogout = () => {
     logout();
-    navigate({ to: "/" });
+    router.push("/");
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md h-16 flex items-center px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 mr-4">
+        <Link href="/" className="flex items-center gap-2 mr-4">
           <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
             <LayoutDashboard className="w-3.5 h-3.5 text-primary-foreground" />
           </div>
@@ -83,7 +85,7 @@ export default function AdminLayout() {
             {navItems.map((item) => (
               <Link
                 key={item.to}
-                to={item.to}
+                href={item.to}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors [&.active]:bg-sidebar-accent [&.active]:text-sidebar-primary"
                 data-ocid={`admin.${item.label.toLowerCase().replace(/ /g, "_")}_link`}
               >
@@ -101,7 +103,7 @@ export default function AdminLayout() {
           </Button>
         </aside>
         <main className="flex-1 p-6 overflow-auto">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

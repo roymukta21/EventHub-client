@@ -1,4 +1,7 @@
 "use client";
+import EventCard from "@/components/EventCard";
+import Footer from "@/components/Footer";
+import SkeletonCard from "@/components/SkeletonCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,12 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { events } from "@/data/events";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import EventCard from "../components/EventCard";
-import Footer from "../components/Footer";
-import SkeletonCard from "../components/SkeletonCard";
-import { events } from "../data/events";
 import type { Event } from "../data/events";
 
 const CATEGORIES = [

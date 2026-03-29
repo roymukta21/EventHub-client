@@ -1,21 +1,28 @@
 "use client";
+import BookingModal from "@/components/BookingModal";
+import EventCard from "@/components/EventCard";
+import Footer from "@/components/Footer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useAuth } from "@/context/AuthContext";
+import { events } from "@/data/events";
+import { useParams, useRouter } from "next/navigation";
+import { reviews as allReviews } from "@/data/reviews";
 import { ArrowLeft, Calendar, MapPin, Star, Tag, Users } from "lucide-react";
 import { useState } from "react";
-import BookingModal from "../components/BookingModal";
-import EventCard from "../components/EventCard";
-import Footer from "../components/Footer";
-import { useAuth } from "../context/AuthContext";
-import { events } from "../data/events";
-import { reviews as allReviews } from "../data/reviews";
+// import BookingModal from "../components/BookingModal";
+// import EventCard from "../components/EventCard";
+// import Footer from "../components/Footer";
+// import { useAuth } from "../context/AuthContext";
+// import { events } from "../data/events";
+// import { reviews as allReviews } from "../data/reviews";
 
 export default function EventDetail() {
-  const { id } = useParams({ from: "/public/events/$id" });
-  const navigate = useNavigate();
+  const params = useParams();
+  const id = params?.id as string;
+  const router = useRouter();
   const { user } = useAuth();
   const event = events.find((e) => e.id === Number(id));
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -33,7 +40,7 @@ export default function EventDetail() {
           <h2 className="text-2xl font-display font-bold mb-2">
             Event not found
           </h2>
-          <Button onClick={() => navigate({ to: "/explore" })}>
+          <Button onClick={() => router.push("/explore")}>
             Back to Explore
           </Button>
         </div>
@@ -54,7 +61,7 @@ export default function EventDetail() {
 
   const handleBook = () => {
     if (!user) {
-      navigate({ to: "/login" });
+      router.push("/login");
       return;
     }
     setBookingOpen(true);
@@ -86,7 +93,7 @@ export default function EventDetail() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button
           variant="ghost"
-          onClick={() => navigate({ to: "/explore" })}
+          onClick={() => router.push("/explore")}
           className="mb-6 gap-2"
           data-ocid="event_detail.back_button"
         >

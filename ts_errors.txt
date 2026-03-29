@@ -1,0 +1,59 @@
+﻿.next/dev/types/validator.ts(87,39): error TS2306: File 'C:/assignment/EventHub full/EventHub/src/app/events/page.tsx' is not a module.
+src/app/dashboard/admin/Analytics.tsx(100,24): error TS2322: Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'.
+  Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType>'.
+    Types of parameters 'v' and 'value' are incompatible.
+      Type 'ValueType | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/app/dashboard/admin/Analytics.tsx(132,24): error TS2322: Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'.
+  Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType>'.
+    Types of parameters 'v' and 'value' are incompatible.
+      Type 'ValueType | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/app/dashboard/admin/Overview.tsx(123,24): error TS2322: Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'.
+  Type '(v: number) => [string, string]' is not assignable to type 'Formatter<ValueType, NameType>'.
+    Types of parameters 'v' and 'value' are incompatible.
+      Type 'ValueType | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/app/dashboard/admin/Overview.tsx(150,17): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(outsideProps: Props<{ name: string; value: number; color: string; }, any>): ReactElement<unknown, string | JSXElementConstructor<any>>', gave the following error.
+    Type '({ name, percent }: { name: string; percent: number; }) => string' is not assignable to type 'PieLabel | undefined'.
+      Type '({ name, percent }: { name: string; percent: number; }) => string' is not assignable to type '(props: PieLabelRenderProps) => ReactNode | ReactElement<SVGElement, string | JSXElementConstructor<any>>'.
+        Types of parameters '__0' and 'props' are incompatible.
+          Type 'PieLabelRenderProps' is not assignable to type '{ name: string; percent: number; }'.
+            Types of property 'name' are incompatible.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(outsideProps: Props<any, any>): ReactElement<unknown, string | JSXElementConstructor<any>>', gave the following error.
+    Type '({ name, percent }: { name: string; percent: number; }) => string' is not assignable to type 'PieLabel | undefined'.
+      Type '({ name, percent }: { name: string; percent: number; }) => string' is not assignable to type '(props: PieLabelRenderProps) => ReactNode | ReactElement<SVGElement, string | JSXElementConstructor<any>>'.
+        Types of parameters '__0' and 'props' are incompatible.
+          Type 'PieLabelRenderProps' is not assignable to type '{ name: string; percent: number; }'.
+            Types of property 'name' are incompatible.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+src/app/explore/page.tsx(17,28): error TS2307: Cannot find module '../data/events' or its corresponding type declarations.
+src/components/ui/aspect-ratio.tsx(3,39): error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+src/components/ui/chart.tsx(110,3): error TS2339: Property 'payload' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+src/components/ui/chart.tsx(115,3): error TS2339: Property 'label' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 24 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+src/components/ui/chart.tsx(183,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/ui/chart.tsx(183,29): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/ui/chart.tsx(261,39): error TS2344: Type '"payload" | "verticalAlign"' does not satisfy the constraint '"string" | "local" | "key" | "type" | "filter" | "fill" | "values" | "method" | "id" | "className" | "style" | "offset" | "slot" | "clipPath" | "mask" | "path" | "name" | "suppressHydrationWarning" | ... 432 more ... | "portal"'.
+  Type '"payload"' is not assignable to type '"string" | "local" | "key" | "type" | "filter" | "fill" | "values" | "method" | "id" | "className" | "style" | "offset" | "slot" | "clipPath" | "mask" | "path" | "name" | "suppressHydrationWarning" | ... 432 more ... | "portal"'.
+src/components/ui/chart.tsx(267,17): error TS2339: Property 'length' does not exist on type '{}'.
+src/components/ui/chart.tsx(279,16): error TS2339: Property 'map' does not exist on type '{}'.
+src/components/ui/chart.tsx(279,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/ui/drawer.tsx(4,43): error TS2307: Cannot find module 'vaul' or its corresponding type declarations.
+src/components/ui/menubar.tsx(3,35): error TS2307: Cannot find module '@radix-ui/react-menubar' or its corresponding type declarations.
+src/components/ui/navigation-menu.tsx(1,42): error TS2307: Cannot find module '@radix-ui/react-navigation-menu' or its corresponding type declarations.
+src/components/ui/popover.tsx(3,35): error TS2307: Cannot find module '@radix-ui/react-popover' or its corresponding type declarations.
+src/components/ui/progress.tsx(3,36): error TS2307: Cannot find module '@radix-ui/react-progress' or its corresponding type declarations.
+src/components/ui/radio-group.tsx(3,38): error TS2307: Cannot find module '@radix-ui/react-radio-group' or its corresponding type declarations.
+src/components/ui/resizable.tsx(5,37): error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+src/components/ui/scroll-area.tsx(3,38): error TS2307: Cannot find module '@radix-ui/react-scroll-area' or its corresponding type declarations.
+src/components/ui/separator.tsx(3,37): error TS2307: Cannot find module '@radix-ui/react-separator' or its corresponding type declarations.
+src/components/ui/slider.tsx(3,34): error TS2307: Cannot find module '@radix-ui/react-slider' or its corresponding type declarations.
+src/components/ui/tabs.tsx(3,32): error TS2307: Cannot find module '@radix-ui/react-tabs' or its corresponding type declarations.
+src/components/ui/toggle-group.tsx(3,39): error TS2307: Cannot find module '@radix-ui/react-toggle-group' or its corresponding type declarations.
+src/components/ui/tooltip.tsx(3,35): error TS2307: Cannot find module '@radix-ui/react-tooltip' or its corresponding type declarations.
+src/utils/StorageClient.ts(1,50): error TS2307: Cannot find module '@icp-sdk/core/agent' or its corresponding type declarations.
+src/utils/StorageClient.ts(2,21): error TS2307: Cannot find module '@icp-sdk/core/candid' or its corresponding type declarations.

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
@@ -23,10 +23,10 @@ import {
   Utensils,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import EventCard from "../components/EventCard";
-import Footer from "../components/Footer";
-import { blogPosts } from "../data/blog";
-import { events } from "../data/events";
+import { events } from "@/data/events";
+import { blogPosts } from "@/data/blog";
+import EventCard from "@/components/EventCard";
+import Footer from "@/components/Footer";
 
 const CATEGORIES = [
   {
@@ -203,14 +203,14 @@ export default function Landing() {
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6">
                 Find Events
                 <br />
-                <span className="gradient-text">You'll Love</span>
+                <span className="gradient-text">You&apos;ll Love</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-md mb-8 leading-relaxed">
-                Your AI-powered gateway to the world's most incredible events.
-                From intimate jazz evenings to massive tech summits.
+                Your AI-powered gateway to the world&apos;s most incredible
+                events. From intimate jazz evenings to massive tech summits.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link to="/explore">
+                <Link href="/explore">
                   <Button
                     size="lg"
                     className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 rounded-xl text-base px-8"
@@ -219,7 +219,7 @@ export default function Landing() {
                     Explore Events <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Link to="/register">
+                <Link href="/register">
                   <Button
                     size="lg"
                     variant="outline"
@@ -357,12 +357,12 @@ export default function Landing() {
               Browse by Category
             </h2>
             <p className="text-muted-foreground">
-              Find exactly the kind of experience you're looking for.
+              Find exactly the kind of experience you&apos;re looking for.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {CATEGORIES.map((cat) => (
-              <Link key={cat.name} to="/explore">
+              <Link key={cat.name} href="/explore">
                 <div
                   className={`rounded-2xl p-6 text-center transition-all duration-300 cursor-pointer hover:scale-105 ${cat.color} border border-transparent hover:border-current/20`}
                   data-ocid={`landing.category_${cat.name.toLowerCase()}_button`}
@@ -390,7 +390,7 @@ export default function Landing() {
                 Hand-picked events loved by our community.
               </p>
             </div>
-            <Link to="/explore">
+            <Link href="/explore">
               <Button
                 variant="outline"
                 className="gap-2"
@@ -521,7 +521,7 @@ export default function Landing() {
                 Insights, guides, and stories about events and experiences.
               </p>
             </div>
-            <Link to="/blog">
+            <Link href="/blog">
               <Button variant="outline" className="gap-2">
                 All Posts <ArrowRight className="w-4 h-4" />
               </Button>
@@ -529,11 +529,7 @@ export default function Landing() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {latestBlogs.map((post, i) => (
-              <Link
-                key={post.id}
-                to="/blog/$id"
-                params={{ id: String(post.id) }}
-              >
+              <Link key={post.id} href={`/blog/${post.id}`}>
                 <div
                   className="bg-card border border-border rounded-2xl overflow-hidden card-hover h-full flex flex-col"
                   data-ocid={`landing.blog_card.${i + 1}`}
@@ -606,8 +602,8 @@ export default function Landing() {
               className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 rounded-2xl p-4"
               data-ocid="newsletter.success_state"
             >
-              <CheckCircle className="w-5 h-5" /> You're subscribed! Welcome to
-              the community.
+              <CheckCircle className="w-5 h-5" /> You&apos;re subscribed!
+              Welcome to the community.
             </div>
           ) : (
             <form
@@ -655,7 +651,7 @@ export default function Landing() {
                 favorite experiences through EventHub.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
-                <Link to="/explore">
+                <Link href="/explore">
                   <Button
                     size="lg"
                     className="bg-white text-primary hover:bg-white/90 rounded-xl font-semibold"
@@ -664,7 +660,7 @@ export default function Landing() {
                     Browse Events
                   </Button>
                 </Link>
-                <Link to="/register">
+                <Link href="/register">
                   <Button
                     size="lg"
                     variant="outline"

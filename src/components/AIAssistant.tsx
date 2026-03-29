@@ -1,6 +1,7 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { Bot, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { events } from "../data/events";
@@ -181,8 +182,7 @@ export default function AIAssistant() {
                               {ev.price === 0 ? "Free" : `$${ev.price}`}
                             </p>
                             <Link
-                              to="/events/$id"
-                              params={{ id: String(ev.id) }}
+                              href={`/events/${ev.id}`}
                               onClick={() => setOpen(false)}
                             >
                               <span className="text-xs text-primary hover:underline">
