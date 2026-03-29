@@ -14,7 +14,6 @@ import {
 import { events } from "@/data/events";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { Event } from "../data/events";
 
 const CATEGORIES = [
   "All",
