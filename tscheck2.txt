@@ -74,5 +74,5 @@ src/components/ui/slider.tsx(3,34): error TS2307: Cannot find module '@radix-ui/
 src/components/ui/tabs.tsx(3,32): error TS2307: Cannot find module '@radix-ui/react-tabs' or its corresponding type declarations.
 src/components/ui/toggle-group.tsx(3,39): error TS2307: Cannot find module '@radix-ui/react-toggle-group' or its corresponding type declarations.
 src/components/ui/tooltip.tsx(3,35): error TS2307: Cannot find module '@radix-ui/react-tooltip' or its corresponding type declarations.
-src/utils/StorageClient.ts(1,50): error TS2307: Cannot find module '@icp-sdk/core/agent' or its corresponding type declarations.
+src/utils/.ts(1,50): error TS2307: Cannot find module '@icp-sdk/core/agent' or its corresponding type declarations.
 src/utils/StorageClient.ts(2,21): error TS2307: Cannot find module '@icp-sdk/core/candid' or its corresponding type declarations.
