@@ -57,7 +57,7 @@ export const blogPosts: BlogPost[] = [
     authorAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=PriyaPatel",
     category: "Food & Culture",
     imageUrl:
-      "https://images.unsplash.com/photo-1555244162-09c340d938a7?w=800&h=400&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1683121624323-0c5bf3ca6af2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "2026-02-05",
     readTime: 5,
     tags: ["food", "festivals", "culture", "history"],
