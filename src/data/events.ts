@@ -38,7 +38,7 @@ export const events: Event[] = [
     date: "2026-04-15",
     location: "Central Park, New York",
     imageUrl:
-      "https://images.unsplash.com/photo-1493225457153-02f9aef44e67?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.8,
     totalReviews: 342,
     totalBookings: 1200,
@@ -59,7 +59,7 @@ export const events: Event[] = [
     date: "2026-05-22",
     location: "Moscone Center, San Francisco",
     imageUrl:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.9,
     totalReviews: 518,
     totalBookings: 3500,
@@ -101,7 +101,7 @@ export const events: Event[] = [
     date: "2026-04-08",
     location: "DUMBO Arts Center, Brooklyn",
     imageUrl:
-      "https://images.unsplash.com/photo-1460661419201-fd4cecdf145a?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1774514580497-77d821c40d0a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.6,
     totalReviews: 156,
     totalBookings: 780,
