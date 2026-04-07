@@ -120,15 +120,8 @@ export default function Footer() {
 
         <div className="border-t border-border mt-8 pt-6 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {year}. Built with ❤️ using{" "}
-            <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(hostname)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              caffeine.ai
-            </a>
+            &copy; {year}
+            
           </p>
         </div>
       </div>
