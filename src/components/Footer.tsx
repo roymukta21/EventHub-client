@@ -120,7 +120,7 @@ export default function Footer() {
 
         <div className="border-t border-border mt-8 pt-6 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {year}
+            &copy; © {year}
             
           </p>
         </div>
