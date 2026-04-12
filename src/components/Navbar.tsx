@@ -211,7 +211,7 @@ export default function Navbar() {
               </>
             )}
             {mounted && user && (
-              <Button variant="outline" size="sm" onClick={handleLogout}>Log out</Button>
+              <Button variant="outline" size="sm" onClick={handleLogout}>Logout</Button>
             )}
           </div>
         </div>
