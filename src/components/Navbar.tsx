@@ -203,7 +203,7 @@ export default function Navbar() {
             {mounted && !user && (
               <>
                 <Link href="/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" size="sm">LogIn</Button>
+                  <Button variant="outline" size="sm">Login</Button>
                 </Link>
                 <Link href="/register" onClick={() => setMobileOpen(false)}>
                   <Button size="sm" className="bg-primary text-primary-foreground">Sign Up</Button>
