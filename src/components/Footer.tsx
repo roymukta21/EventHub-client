@@ -35,7 +35,7 @@ export default function Footer() {
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Discover, book, and experience the world&apos;s most extraordinary
-              events. Your next great adventure is one click away.....
+              events. Your next great adventure is one click away.
             </p>
             <div className="flex gap-3 mt-4">
               {SOCIAL_LINKS.map(({ Icon, href, label }) => (
