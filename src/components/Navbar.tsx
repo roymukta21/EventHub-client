@@ -1,4 +1,14 @@
 "use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Calendar, ChevronDown, LogOut, Menu, Moon, 
+  Settings, Sun, User, X, Sparkles 
+} from "lucide-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,48 +20,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  Calendar,
-  ChevronDown,
-  LogOut,
-  Menu,
-  Moon,
-  Settings,
-  Sun,
-  User,
-  X,
-} from "lucide-react";
-import { useState, useEffect } from "react";
 
 const categories = [
   "Music", "Technology", "Sports", "Arts",
   "Food", "Business", "Health", "Education",
 ];
 
-function NavLink({
-  href,
-  children,
-  ocid,
-  onClick,
-}: {
-  href: string;
-  children: React.ReactNode;
-  ocid: string;
-  onClick?: () => void;
-}) {
-  return (
-    <Link
-      href={href}
-      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-      data-ocid={ocid}
-      onClick={onClick}
-    >
-      {children}
-    </Link>
-  );
-}
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
+  { name: "Blog", href: "/blog" },
+];
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -59,6 +39,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -69,101 +50,123 @@ export default function Navbar() {
     router.push("/");
   };
 
+  if (!mounted) return <div className="h-16 w-full border-b bg-background" />;
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2" data-ocid="navbar.home_link">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Calendar className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-xl text-foreground">EventHub</span>
+          
+          {/* Logo Section */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <motion.div 
+              whileHover={{ rotate: 10, scale: 1.1 }}
+              className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20"
+            >
+              <Calendar className="w-5 h-5 text-primary-foreground" />
+            </motion.div>
+            <span className="font-display font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+              EventHub
+            </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              data-ocid="navbar.home_link"
-            >
-              Home
-            </Link>
-
-            {/* Explore: server এ plain link, client এ dropdown */}
-            {!mounted ? (
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
               <Link
-                href="/explore"
-                className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                key={link.name}
+                href={link.href}
+                className={`relative px-4 py-2 text-sm font-medium transition-colors hover:text-primary ${
+                  pathname === link.href ? "text-primary" : "text-muted-foreground"
+                }`}
               >
-                Explore <ChevronDown className="w-3.5 h-3.5" />
+                {link.name}
+                {pathname === link.href && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary mx-4"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </Link>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    data-ocid="navbar.explore_link"
-                  >
-                    Explore <ChevronDown className="w-3.5 h-3.5" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 p-2" data-ocid="navbar.explore_dropdown_menu">
-                  <Link href="/explore">
-                    <DropdownMenuItem className="cursor-pointer font-medium">All Events</DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuSeparator />
-                  {categories.map((cat) => (
-                    <Link key={cat} href="/explore">
-                      <DropdownMenuItem className="cursor-pointer">{cat}</DropdownMenuItem>
-                    </Link>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+            ))}
 
-            <NavLink href="/about" ocid="navbar.about_link" onClick={() => setMobileOpen(false)}>About</NavLink>
-            <NavLink href="/contact" ocid="navbar.contact_link" onClick={() => setMobileOpen(false)}>Contact</NavLink>
-            <NavLink href="/blog" ocid="navbar.blog_link" onClick={() => setMobileOpen(false)}>Blog</NavLink>
-            {mounted && user && (
-              <NavLink href="/dashboard/profile" ocid="navbar.dashboard_link" onClick={() => setMobileOpen(false)}>
+            {/* Explore Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors outline-none">
+                  Explore <ChevronDown className="w-3.5 h-3.5 opacity-50" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 p-2 backdrop-blur-lg">
+                <Link href="/explore">
+                  <DropdownMenuItem className="cursor-pointer font-semibold gap-2">
+                    <Sparkles className="w-4 h-4 text-yellow-500" /> All Events
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator />
+                {categories.map((cat) => (
+                  <Link key={cat} href={`/explore?category=${cat.toLowerCase()}`}>
+                    <DropdownMenuItem className="cursor-pointer">{cat}</DropdownMenuItem>
+                  </Link>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {user && (
+               <Link href="/dashboard/profile" className={`px-4 py-2 text-sm font-medium transition-colors hover:text-primary ${pathname.includes('dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>
                 Dashboard
-              </NavLink>
+               </Link>
             )}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="hidden sm:flex" aria-label="Toggle theme">
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {/* Actions Section */}
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={toggleTheme} 
+              className="rounded-full hover:bg-primary/10 transition-colors"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={theme}
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -10, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {theme === "dark" ? <Sun className="w-[1.2rem] h-[1.2rem]" /> : <Moon className="w-[1.2rem] h-[1.2rem]" />}
+                </motion.div>
+              </AnimatePresence>
             </Button>
 
-            {!mounted ? (
-              <div className="hidden md:flex items-center gap-2 w-[120px] h-8" />
-            ) : user ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button type="button" className="flex items-center gap-2 rounded-full" data-ocid="navbar.profile_dropdown">
-                    <Avatar className="w-8 h-8">
+                  <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-offset-background transition-all hover:ring-2 hover:ring-primary/20">
+                    <Avatar className="h-9 w-9">
                       <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>{user.name[0]}</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary">{user.name[0]}</AvatarFallback>
                     </Avatar>
-                    <span className="hidden lg:block text-sm font-medium">{user.name}</span>
-                  </button>
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-2 py-1.5">
-                    <p className="font-semibold text-sm">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                <DropdownMenuContent align="end" className="w-56 p-2">
+                  <div className="flex items-center gap-2 p-2">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user.name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                    </div>
                   </div>
                   <DropdownMenuSeparator />
                   <Link href="/dashboard/profile">
                     <DropdownMenuItem className="cursor-pointer gap-2"><User className="w-4 h-4" /> Profile</DropdownMenuItem>
                   </Link>
-                  <Link href="/dashboard/profile">
+                  <Link href="/dashboard/settings">
                     <DropdownMenuItem className="cursor-pointer gap-2"><Settings className="w-4 h-4" /> Settings</DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer gap-2 text-destructive" onClick={handleLogout}>
+                  <DropdownMenuItem className="cursor-pointer gap-2 text-destructive focus:text-destructive" onClick={handleLogout}>
                     <LogOut className="w-4 h-4" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -171,51 +174,70 @@ export default function Navbar() {
             ) : (
               <div className="hidden md:flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="ghost" size="sm" data-ocid="navbar.login_button">Login</Button>
+                  <Button variant="ghost" size="sm" className="font-medium">Login</Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm" className="bg-primary text-primary-foreground">Sign Up</Button>
+                  <Button size="sm" className="font-medium px-5 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">Sign Up</Button>
                 </Link>
               </div>
             )}
 
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
+            {/* Mobile Menu Toggle */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden rounded-full" 
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-md px-4 py-4 space-y-3">
-          <Link href="/" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>Home</Link>
-          <Link href="/explore" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>Explore</Link>
-          <Link href="/about" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>About</Link>
-          <Link href="/contact" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>Contact</Link>
-          <Link href="/blog" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>Blog</Link>
-          {mounted && user && (
-            <Link href="/dashboard/profile" className="block py-2 text-sm font-medium" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-          )}
-          <div className="flex items-center gap-3 pt-2">
-            <Button variant="outline" size="sm" onClick={toggleTheme}>
-              {theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Button>
-            {mounted && !user && (
-              <>
-                <Link href="/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" size="sm">Login</Button>
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-border bg-background overflow-hidden"
+          >
+            <div className="flex flex-col p-4 space-y-1">
+              {[...navLinks, { name: "Explore", href: "/explore" }].map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                    pathname === link.href ? "bg-primary/10 text-primary" : "hover:bg-muted"
+                  }`}
+                >
+                  {link.name}
                 </Link>
-                <Link href="/register" onClick={() => setMobileOpen(false)}>
-                  <Button size="sm" className="bg-primary text-primary-foreground">Sign Up</Button>
-                </Link>
-              </>
-            )}
-            {mounted && user && (
-              <Button variant="outline" size="sm" onClick={handleLogout}>Logout</Button>
-            )}
-          </div>
-        </div>
-      )}
+              ))}
+              
+              <div className="pt-4 mt-2 border-t border-border flex flex-col gap-2">
+                {!user ? (
+                  <>
+                    <Link href="/login" onClick={() => setMobileOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start">Login</Button>
+                    </Link>
+                    <Link href="/register" onClick={() => setMobileOpen(false)}>
+                      <Button className="w-full justify-start">Sign Up</Button>
+                    </Link>
+                  </>
+                ) : (
+                  <Button variant="outline" className="w-full justify-start gap-2 text-destructive" onClick={handleLogout}>
+                    <LogOut className="w-4 h-4" /> Logout
+                  </Button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
