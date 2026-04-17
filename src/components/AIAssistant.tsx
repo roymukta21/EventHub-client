@@ -131,7 +131,7 @@ export default function AIAssistant() {
                   <div
                     className={`max-w-[85%] px-4 py-2.5 shadow-sm text-sm ${
                       msg.role === "user"
-                        ? "bg-primary text-white rounded-[20px] rounded-br-none"
+                        ? "bg-primary text-blue-600 rounded-[20px] rounded-br-none"
                         : "bg-white text-slate-700 border border-slate-100 rounded-[20px] rounded-bl-none"
                     }`}
                   >
