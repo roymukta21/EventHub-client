@@ -24,7 +24,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme: theme || "light", setTheme, themes }}>
+    <ThemeContext.Provider
+      value={{ theme: theme || "light", setTheme, themes }}
+    >
       {children}
     </ThemeContext.Provider>
   );
@@ -36,8 +38,4 @@ export function useTheme() {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
-}
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
-  return ctx;
 }
