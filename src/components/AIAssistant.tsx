@@ -183,12 +183,12 @@ export default function AIAssistant() {
                 <button
                   onClick={send}
                   disabled={loading || !input.trim()}
-                  className="bg-primary text-blue-600 p-2 rounded-full hover:opacity-90 disabled:opacity-50 transition-all"
+                  className="bg-primary text-blue-800 p-2 rounded-full hover:opacity-90 disabled:opacity-50 transition-all"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-[10px] text-center text-slate-400 mt-2">
+              <p className="text-[10px] text-center text-slate-500 mt-2">
                 Powered by EventHub Smart AI
               </p>
             </div>
