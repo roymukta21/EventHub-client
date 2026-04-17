@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Bot, Send, Sparkles, X, MessageSquare } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // অ্যানিমেশনের জন্য
+import { motion, AnimatePresence } from "framer-motion"; 
 import { events } from "../data/events";
 import type { Event } from "../data/events";
 import { api } from "../utils/api";
@@ -16,7 +16,6 @@ interface Message {
   events?: Event[];
 }
 
-// ... getLocalResponse ফাংশনটি আগের মতোই থাকবে ...
 function getLocalResponse(input: string): { text: string; events?: Event[] } {
   const q = input.toLowerCase();
   if (q.includes("popular") || q.includes("top") || q.includes("best"))
