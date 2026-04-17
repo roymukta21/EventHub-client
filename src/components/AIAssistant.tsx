@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { Bot, Send, Sparkles, X } from "lucide-react";
+import { Bot, Send, Sparkles, X, MessageSquare } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"; // অ্যানিমেশনের জন্য
 import { events } from "../data/events";
 import type { Event } from "../data/events";
 import { api } from "../utils/api";
@@ -15,7 +16,7 @@ interface Message {
   events?: Event[];
 }
 
-// Fallback local response when not authenticated or API unavailable
+// ... getLocalResponse ফাংশনটি আগের মতোই থাকবে ...
 function getLocalResponse(input: string): { text: string; events?: Event[] } {
   const q = input.toLowerCase();
   if (q.includes("popular") || q.includes("top") || q.includes("best"))
@@ -52,14 +53,13 @@ export default function AIAssistant() {
     {
       id: 0,
       role: "bot",
-      text: "Hello! I'm EventAI 🤖 Ask me to recommend events, find music festivals, tech conferences, or anything else!",
+      text: "Hello! I'm EventAI 🤖 How can I help you find your next event today?",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll on message change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -74,40 +74,15 @@ export default function AIAssistant() {
 
     try {
       const token = localStorage.getItem("eventhub_token");
-      let botText = "";
       if (token) {
-        const res = await api.post<{
-          success: boolean;
-          data: { reply: string };
-        }>("/ai/chat", { message: text });
-        botText = res.data.reply;
+        const res = await api.post<{ success: boolean; data: { reply: string } }>("/ai/chat", { message: text });
+        setMessages((prev) => [...prev, { id: Date.now() + 1, role: "bot", text: res.data.reply }]);
       } else {
-        const local = getLocalResponse(text);
-        const botMsg: Message = {
-          id: Date.now() + 1,
-          role: "bot",
-          text: local.text,
-          events: local.events,
-        };
-        setMessages((prev) => [...prev, botMsg]);
-        setLoading(false);
-        return;
+        throw new Error("Local fallback");
       }
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, role: "bot", text: botText },
-      ]);
     } catch {
       const local = getLocalResponse(text);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          role: "bot",
-          text: local.text,
-          events: local.events,
-        },
-      ]);
+      setMessages((prev) => [...prev, { id: Date.now() + 1, role: "bot", text: local.text, events: local.events }]);
     } finally {
       setLoading(false);
     }
@@ -115,120 +90,111 @@ export default function AIAssistant() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center animate-pulse-glow"
-        data-ocid="ai_assistant.open_modal_button"
-        aria-label="Open AI Assistant"
+      {/* Floating Toggle Button */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setOpen(!open)}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-all duration-300"
       >
-        <Sparkles className="w-6 h-6" />
-      </button>
+        {open ? <X className="w-6 h-6" /> : <Sparkles className="w-6 h-6" />}
+      </motion.button>
 
-      {open && (
-        <div
-          className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-card border border-border rounded-2xl shadow-2xl flex flex-col"
-          style={{ height: "500px" }}
-        >
-          <div className="flex items-center justify-between p-4 border-b border-border bg-primary/5 rounded-t-2xl">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <Bot className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <div>
-                <p className="font-display font-semibold text-sm">EventAI</p>
-                <p className="text-xs text-muted-foreground">
-                  Always here to help
-                </p>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="fixed bottom-24 right-6 z-50 w-[350px] sm:w-[400px] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col"
+            style={{ height: "550px" }}
+          >
+            {/* Header */}
+            <div className="bg-white border-b p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Bot className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 leading-none">EventAI Assistant</h3>
+                  <span className="text-[11px] text-green-500 font-medium flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Online
+                  </span>
+                </div>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              data-ocid="ai_assistant.close_button"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[85%] ${msg.role === "user" ? "bg-primary text-primary-foreground rounded-2xl rounded-br-sm" : "bg-muted text-foreground rounded-2xl rounded-bl-sm"} px-3 py-2 text-sm`}
-                >
-                  <p className="whitespace-pre-line">{msg.text}</p>
-                  {msg.events && msg.events.length > 0 && (
-                    <div className="mt-2 space-y-2">
-                      {msg.events.map((ev) => (
-                        <div
-                          key={ev.id}
-                          className="bg-background/80 rounded-lg p-2 flex gap-2 items-start"
-                        >
-                          <img
-                            src={ev.imageUrl}
-                            alt={ev.title}
-                            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-xs line-clamp-1">
-                              {ev.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {ev.price === 0 ? "Free" : `$${ev.price}`}
-                            </p>
-                            <Link
-                              href={`/events/${ev.id}`}
-                              onClick={() => setOpen(false)}
-                            >
-                              <span className="text-xs text-primary hover:underline">
-                                View Event →
-                              </span>
-                            </Link>
+            {/* Chat Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50 scrollbar-thin">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[85%] px-4 py-2.5 shadow-sm text-sm ${
+                      msg.role === "user"
+                        ? "bg-primary text-white rounded-[20px] rounded-br-none"
+                        : "bg-white text-slate-700 border border-slate-100 rounded-[20px] rounded-bl-none"
+                    }`}
+                  >
+                    <p className="leading-relaxed">{msg.text}</p>
+                    
+                    {/* Event Cards within Chat */}
+                    {msg.events && msg.events.length > 0 && (
+                      <div className="mt-3 space-y-2">
+                        {msg.events.map((ev) => (
+                          <div key={ev.id} className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex gap-3 hover:bg-white transition-colors cursor-pointer group">
+                            <img src={ev.imageUrl} alt={ev.title} className="w-14 h-14 rounded-lg object-cover" />
+                            <div className="flex-1 min-w-0 flex flex-col justify-center">
+                              <p className="font-bold text-xs text-slate-900 truncate">{ev.title}</p>
+                              <p className="text-xs text-primary font-semibold mt-0.5">
+                                {ev.price === 0 ? "Free" : `$${ev.price}`}
+                              </p>
+                              <Link href={`/events/${ev.id}`} className="text-[10px] text-slate-400 mt-1 flex items-center group-hover:text-primary transition-colors">
+                                Details <Send className="w-2 h-2 ml-1" />
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-            {loading && (
-              <div className="flex justify-start">
-                <div className="bg-muted rounded-2xl rounded-bl-sm px-3 py-2 text-sm text-muted-foreground">
-                  Thinking...
+              ))}
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="bg-white border border-slate-100 rounded-2xl rounded-bl-none px-4 py-2 text-xs text-slate-400 italic">
+                    EventAI is thinking...
+                  </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
 
-          <div className="p-3 border-t border-border flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && send()}
-              placeholder="Ask about events..."
-              className="text-sm"
-              data-ocid="ai_assistant.input"
-              disabled={loading}
-            />
-            <Button
-              onClick={send}
-              size="icon"
-              className="bg-primary text-primary-foreground flex-shrink-0"
-              data-ocid="ai_assistant.submit_button"
-              disabled={loading}
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      )}
+            {/* Input Area */}
+            <div className="p-4 bg-white border-t border-slate-100">
+              <div className="relative flex items-center gap-2 bg-slate-100 rounded-full px-4 py-1.5 focus-within:ring-2 ring-primary/20 transition-all">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && send()}
+                  placeholder="Type your question..."
+                  className="flex-1 bg-transparent border-none outline-none text-sm text-slate-700 py-2 placeholder:text-slate-400"
+                  disabled={loading}
+                />
+                <button
+                  onClick={send}
+                  disabled={loading || !input.trim()}
+                  className="bg-primary text-white p-2 rounded-full hover:opacity-90 disabled:opacity-50 transition-all"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-[10px] text-center text-slate-400 mt-2">
+                Powered by EventHub Smart AI
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
