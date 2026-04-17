@@ -3,9 +3,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Menu, Moon, Sun, X } from "lucide-react";
+import { Calendar, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes"; // নিশ্চিত করুন এটি ইন্সটল করা আছে
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,12 +38,13 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-background/80 backdrop-blur-lg border-b py-3" : "bg-transparent py-5"
+        scrolled
+          ? "bg-background/80 backdrop-blur-lg border-b py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center transition-transform group-hover:rotate-12">
@@ -49,10 +57,16 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link key={link.name} href={link.href}>
-                <Button variant="ghost" className={`relative ${pathname === link.href ? "text-primary" : "text-muted-foreground"}`}>
+                <Button
+                  variant="ghost"
+                  className={`relative ${pathname === link.href ? "text-primary" : "text-muted-foreground"}`}
+                >
                   {link.name}
                   {pathname === link.href && (
-                    <motion.div layoutId="navIndicator" className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full" />
+                    <motion.div
+                      layoutId="navIndicator"
+                      className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full"
+                    />
                   )}
                 </Button>
               </Link>
@@ -61,11 +75,25 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </Button>
+            <Select value={theme} onValueChange={setTheme}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+                <SelectItem value="blue">Blue</SelectItem>
+                <SelectItem value="green">Green</SelectItem>
+                <SelectItem value="purple">Purple</SelectItem>
+              </SelectContent>
+            </Select>
             <Button className="rounded-full px-5">Login</Button>
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
               {mobileOpen ? <X /> : <Menu />}
             </Button>
           </div>
@@ -83,8 +111,14 @@ export default function Navbar() {
           >
             <div className="p-4 space-y-2">
               {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setMobileOpen(false)}>
-                  <div className="p-3 hover:bg-accent rounded-lg">{link.name}</div>
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <div className="p-3 hover:bg-accent rounded-lg">
+                    {link.name}
+                  </div>
                 </Link>
               ))}
             </div>

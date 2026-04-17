@@ -3,6 +3,91 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #3b82f6;
+}
+
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #60a5fa;
+  --primary-foreground: #0f172a;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --muted: #0f172a;
+  --muted-foreground: #94a3b8;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --border: #334155;
+  --input: #334155;
+  --ring: #60a5fa;
+}
+
+[data-theme="blue"] {
+  --background: #f0f9ff;
+  --foreground: #0c4a6e;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #dbeafe;
+  --secondary-foreground: #1e40af;
+  --accent: #dbeafe;
+  --accent-foreground: #1e40af;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --card: #ffffff;
+  --card-foreground: #0c4a6e;
+  --border: #bfdbfe;
+  --input: #bfdbfe;
+  --ring: #2563eb;
+}
+
+[data-theme="green"] {
+  --background: #f0fdf4;
+  --foreground: #14532d;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: #dcfce7;
+  --secondary-foreground: #166534;
+  --accent: #dcfce7;
+  --accent-foreground: #166534;
+  --muted: #f0fdf4;
+  --muted-foreground: #365314;
+  --card: #ffffff;
+  --card-foreground: #14532d;
+  --border: #bbf7d0;
+  --input: #bbf7d0;
+  --ring: #16a34a;
+}
+
+[data-theme="purple"] {
+  --background: #faf5ff;
+  --foreground: #581c87;
+  --primary: #9333ea;
+  --primary-foreground: #ffffff;
+  --secondary: #f3e8ff;
+  --secondary-foreground: #6b21a8;
+  --accent: #f3e8ff;
+  --accent-foreground: #6b21a8;
+  --muted: #faf5ff;
+  --muted-foreground: #7c3aed;
+  --card: #ffffff;
+  --card-foreground: #581c87;
+  --border: #d8b4fe;
+  --input: #d8b4fe;
+  --ring: #9333ea;
 }
 
 @theme inline {
