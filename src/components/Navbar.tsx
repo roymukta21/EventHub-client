@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+//import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { theme, toggleTheme } = themeContext(); 
+  //const { theme, toggleTheme } = themeContext(); 
   const pathname = usePathname();
 
   
