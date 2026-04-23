@@ -1,4 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EventHub
+
+A modern event management platform built with Next.js and Node.js/Express.
+
+## Features
+
+- **Event Discovery** - Browse and explore upcoming events
+- **User Authentication** - Secure login and registration system
+- **Booking System** - Book events with a seamless booking modal
+- **Dashboard** - Manage bookings, reviews, and user profile
+- **AI Assistant** - Get event recommendations powered by AI
+- **Blog** - Latest news and updates about events
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express, TypeScript
+- **Database**: (Configure your database in EventHub-Server)
+
+## Getting Started
+
+### Frontend Setup
+
+```bash
+cd EventHub
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Backend Setup
+
+```bash
+cd EventHub-Server
+npm install
+npm run dev
+```
+
+The API runs on [http://localhost:5000](http://localhost:5000).
+
+## Project Structure
+
+```
+EventHub/
+├── src/
+│   ├── app/           # Next.js App Router pages
+│   ├── components/    # Reusable React components
+│   ├── context/      # React Context (Auth, Theme)
+│   ├── data/         # Static data files
+│   ├── hooks/        # Custom React hooks
+│   └── lib/          # Utility functions
+│
+EventHub-Server/
+├── src/
+│   ├── api/          # API route handlers
+│   ├── controllers/  # Business logic
+│   ├── middleware/   # Auth & error handling
+│   ├── models/       # Database models
+│   └── routes/      # Express routes
+```
+
+## Available Pages
+
+- `/` - Home/Landing page
+- `/events` - Browse events
+- `/explore` - Explore events
+- `/blog` - Blog posts
+- `/contact` - Contact page
+- `/login` - User login
+- `/register` - User registration
+- `/dashboard` - User dashboard (requires auth)
+- `/about` - About page
+- `/privacy` - Privacy policy
+- `/terms` - Terms of service
+
+## Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Express.js Documentation](https://expressjs.com)
 
 ## Getting Started
 

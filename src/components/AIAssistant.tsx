@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { Bot, Send, Sparkles, X, MessageSquare } from "lucide-react";
+import { Bot, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"; 
 import { events } from "../data/events";
@@ -16,34 +16,30 @@ interface Message {
   events?: Event[];
 }
 
+// Local Fallback Response Logic
 function getLocalResponse(input: string): { text: string; events?: Event[] } {
   const q = input.toLowerCase();
   if (q.includes("popular") || q.includes("top") || q.includes("best"))
     return {
-      text: "Here are the top-rated events! 🌟",
+      text: "Here are the top-rated events on EventHub! 🌟",
       events: [...events].sort((a, b) => b.rating - a.rating).slice(0, 3),
     };
   if (q.includes("free") || q.includes("cheap"))
     return {
-      text: "Here are some affordable events! 💰",
+      text: "I found some affordable events for you! 💰",
       events: events.filter((e) => e.price <= 20).slice(0, 3),
     };
-  if (q.includes("music"))
+  if (q.includes("music") || q.includes("concert"))
     return {
-      text: "Check out these music events! 🎵",
+      text: "Check out these music festivals and concerts! 🎵",
       events: events.filter((e) => e.category === "Music").slice(0, 3),
     };
-  if (q.includes("tech") || q.includes("technology"))
+  if (q.includes("tech") || q.includes("programming"))
     return {
-      text: "Top tech events for you! 💻",
+      text: "Here are the latest tech conferences! 💻",
       events: events.filter((e) => e.category === "Technology").slice(0, 3),
     };
-  if (q.includes("food"))
-    return {
-      text: "Delicious food events! 🍔",
-      events: events.filter((e) => e.category === "Food").slice(0, 3),
-    };
-  return { text: "Try asking about music, tech, food, or popular events! 🎉" };
+  return { text: "I'm not sure about that, but try asking about music, tech, or popular events! 🎉" };
 }
 
 export default function AIAssistant() {
@@ -52,13 +48,14 @@ export default function AIAssistant() {
     {
       id: 0,
       role: "bot",
-      text: "Hello! I'm EventAI 🤖 How can I help you find your next event today?",
+      text: "Hello! I'm EventAI 🤖 Ask me to find festivals, tech talks, or anything happening near you!",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -66,22 +63,44 @@ export default function AIAssistant() {
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
+
+    // ১. ইউজারের মেসেজ UI-তে সেট করা
     const userMsg: Message = { id: Date.now(), role: "user", text };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("eventhub_token");
-      if (token) {
-        const res = await api.post<{ success: boolean; data: { reply: string } }>("/ai/chat", { message: text });
-        setMessages((prev) => [...prev, { id: Date.now() + 1, role: "bot", text: res.data.reply }]);
+      // ২. ব্যাক-এন্ড API কল (আপনার Vercel হ্যান্ডলার অনুযায়ী)
+      // আপনার হ্যান্ডলারে বডিতে 'prompt' পাঠাতে হবে
+      const response = await api.post("/ai/chat", { prompt: text });
+
+      if (response.data.success) {
+        setMessages((prev) => [
+          ...prev, 
+          { 
+            id: Date.now() + 1, 
+            role: "bot", 
+            text: response.data.data.reply // Gemini AI-এর রেসপন্স
+          }
+        ]);
       } else {
-        throw new Error("Local fallback");
+        throw new Error("API call failed");
       }
-    } catch {
+    } catch (error) {
+      console.log("Falling back to local logic...");
+      
+      // ৩. যদি AI ফেইল করে তবে লোকাল ডেটা থেকে উত্তর দিবে
       const local = getLocalResponse(text);
-      setMessages((prev) => [...prev, { id: Date.now() + 1, role: "bot", text: local.text, events: local.events }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: "bot",
+          text: local.text,
+          events: local.events,
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -94,7 +113,7 @@ export default function AIAssistant() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-all duration-300"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-none outline-none"
       >
         {open ? <X className="w-6 h-6" /> : <Sparkles className="w-6 h-6" />}
       </motion.button>
@@ -130,25 +149,25 @@ export default function AIAssistant() {
                   <div
                     className={`max-w-[85%] px-4 py-2.5 shadow-sm text-sm ${
                       msg.role === "user"
-                        ? "bg-primary text-blue-600 rounded-[20px] rounded-br-none"
+                        ? "bg-primary text-white rounded-[20px] rounded-br-none"
                         : "bg-white text-slate-700 border border-slate-100 rounded-[20px] rounded-bl-none"
                     }`}
                   >
-                    <p className="leading-relaxed">{msg.text}</p>
+                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
                     
-                    {/* Event Cards within Chat */}
+                    {/* Event Recommendations Cards */}
                     {msg.events && msg.events.length > 0 && (
                       <div className="mt-3 space-y-2">
                         {msg.events.map((ev) => (
-                          <div key={ev.id} className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex gap-3 hover:bg-white transition-colors cursor-pointer group">
-                            <img src={ev.imageUrl} alt={ev.title} className="w-14 h-14 rounded-lg object-cover" />
+                          <div key={ev.id} className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex gap-3 hover:bg-white transition-all cursor-pointer group">
+                            <img src={ev.imageUrl} alt={ev.title} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" />
                             <div className="flex-1 min-w-0 flex flex-col justify-center">
-                              <p className="font-bold text-xs text-slate-900 truncate">{ev.title}</p>
-                              <p className="text-xs text-primary font-semibold mt-0.5">
+                              <p className="font-bold text-[11px] text-slate-900 truncate">{ev.title}</p>
+                              <p className="text-[10px] text-primary font-bold mt-0.5">
                                 {ev.price === 0 ? "Free" : `$${ev.price}`}
                               </p>
                               <Link href={`/events/${ev.id}`} className="text-[10px] text-slate-400 mt-1 flex items-center group-hover:text-primary transition-colors">
-                                Details <Send className="w-2 h-2 ml-1" />
+                                View Event →
                               </Link>
                             </div>
                           </div>
@@ -160,8 +179,9 @@ export default function AIAssistant() {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-slate-100 rounded-2xl rounded-bl-none px-4 py-2 text-xs text-slate-400 italic">
-                    EventAI is thinking...
+                  <div className="bg-white border border-slate-100 rounded-2xl rounded-bl-none px-4 py-2 text-xs text-slate-400 italic flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
+                    Thinking...
                   </div>
                 </div>
               )}
@@ -175,20 +195,20 @@ export default function AIAssistant() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && send()}
-                  placeholder="Type your question..."
+                  placeholder="Ask about events..."
                   className="flex-1 bg-transparent border-none outline-none text-sm text-slate-700 py-2 placeholder:text-slate-400"
                   disabled={loading}
                 />
                 <button
                   onClick={send}
                   disabled={loading || !input.trim()}
-                  className="bg-primary text-blue-800 p-2 rounded-full hover:opacity-90 disabled:opacity-50 transition-all"
+                  className="bg-primary text-white p-2 rounded-full hover:opacity-90 disabled:opacity-50 transition-all flex-shrink-0"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-[10px] text-center text-slate-500 mt-2">
-                Powered by EventHub Smart AI
+              <p className="text-[10px] text-center text-slate-400 mt-2">
+                EventHub Smart AI • Next.js 15
               </p>
             </div>
           </motion.div>
